@@ -1,6 +1,6 @@
 /*
 ? Problem Statement:
-    * Write a program to store a sparse matrix in a coordinate list.
+    * Implementation of Sparse Matrix Storage using Coordinate List in C
 
 ? Sparse Matrix:
     * A matrix in which most of the elements are zero.
