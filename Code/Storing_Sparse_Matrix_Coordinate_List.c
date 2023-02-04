@@ -41,31 +41,21 @@ int main()
 
     // ? 1) Get the dimensions of the sparse matrix
     printf("Enter the dimensions of the sparse matrix: ");
-    if (scanf("%d %d",
-              &sparseMatrix.row,
-              &sparseMatrix.col) != 2)
-    {
-        printf("Error: Invalid input for matrix dimensions\n");
-        return 1;
-    }
+    scanf("%d %d", &sparseMatrix.row, &sparseMatrix.col);
 
     // ? 2) Get the number of non-zero elements
     printf("Enter the number of non-zero elements: ");
-    if (scanf("%d", &sparseMatrix.no_terms) != 1)
-    {
-        printf("Error: Invalid input for number of non-zero elements\n");
-        return 1;
-    }
+    scanf("%d", &sparseMatrix.no_terms);
 
-    // ? 3) Allocate memory for the sparse matrix
-    int no_bytes = sparseMatrix.no_terms * sizeof(struct coordinate);
-    sparseMatrix.terms = (struct coordinate *)malloc(no_bytes);
+    // ? 3) Dynamically allocate memory for the sparse matrix
+    sparseMatrix.terms = (struct coordinate *)malloc(sparseMatrix.no_terms *
+                                                     sizeof(struct coordinate));
 
     // ? 4) Check if memory allocation was successful
     if (sparseMatrix.terms == NULL)
     {
         printf("Error: Failed to allocate memory for matrix\n");
-        return 1;
+        exit(0);
     }
 
     // ? 5) Get the non-zero elements
@@ -73,17 +63,10 @@ int main()
     for (i = 0; i < sparseMatrix.no_terms; i++)
     {
         // x, y, val
-        if (scanf("%d %d %d",
-                  &sparseMatrix.terms[i].x,
-                  &sparseMatrix.terms[i].y,
-                  &sparseMatrix.terms[i].val) != 3)
-        {
-            printf("Error: Invalid input for element %d\n", i + 1);
-
-            free(sparseMatrix.terms); // Free the allocated memory
-
-            return 1;
-        }
+        scanf("%d %d %d",
+              &sparseMatrix.terms[i].x,
+              &sparseMatrix.terms[i].y,
+              &sparseMatrix.terms[i].val);
     }
 
     // ? 6) Print the sparse matrix
@@ -98,8 +81,8 @@ int main()
 
             for (int k = 0; k < sparseMatrix.no_terms; k++) // Loop through the non-zero elements
             {
-
                 // If the current element is the one we are looking for
+                // kth term matches the current element
                 if (sparseMatrix.terms[k].x == x &&
                     sparseMatrix.terms[k].y == y)
                 {
@@ -118,10 +101,11 @@ int main()
     // ? 7) Display no. of non-zero & zero elements
     int non_zero = sparseMatrix.no_terms;
     int zero = sparseMatrix.row * sparseMatrix.col - sparseMatrix.no_terms;
+
     printf("No. of non-zero elements: %d\n", non_zero);
     printf("No. of zero elements: %d\n", zero);
 
-    free(sparseMatrix.terms);
+    free(sparseMatrix.terms); // Free the allocated memory
 
     return 0;
 }
